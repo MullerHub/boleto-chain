@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// NÃO PRECISAMOS MAIS DE IMPORTAR NADA DE 'qrcode.react'
 import Image from 'next/image';
 import { sha256 } from '@/lib/hash';
 
@@ -26,9 +25,7 @@ export default function GeradorDeBoleto() {
     };
 
     // Variável para construir o URL da imagem do QR Code
-    const qrApiUrl = boletoData
-        ? `https://api.qrserver.com/v1/create-qr-code/?size=256x256&margin=10&data=${encodeURIComponent(boletoData)}`
-        : '';
+    const qrApiUrl = "/Validado.png";
 
     return (
         <div className="bg-slate-800 p-6 rounded-lg shadow-lg w-full">
