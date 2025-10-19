@@ -55,7 +55,7 @@ export default function GeradorDeBoleto() {
 
             {boletoData && (
                 <div className="mt-6 p-4 bg-slate-700 rounded-lg text-center">
-                    <h3 className="text-xl font-bold mb-4 text-white">Boleto Gerado com Selo VeriPay</h3>
+                    <h3 className="text-xl font-bold mb-4 text-white">Boleto Gerado com Selo ValidaBoleto</h3>
                     <p className="text-slate-300 mb-4">
                         Scaneie o QR Code abaixo para verificar a autenticidade.<br />
                         (Ou copie o JSON da caixa abaixo para o verificador)
