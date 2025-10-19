@@ -16,9 +16,6 @@ export default function GeradorDeBoleto() {
         console.log(`Hash ${hash} registado na 'blockchain simulada' para os dados: ${dadosCriticos}`);
 
         const dadosCompletosParaQr = {
-            beneficiario,
-            valor,
-            vencimento,
             hash,
         };
         setBoletoData(JSON.stringify(dadosCompletosParaQr, null, 2));

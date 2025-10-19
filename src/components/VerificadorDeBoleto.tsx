@@ -9,23 +9,36 @@ export default function VerificadorDeBoleto() {
     const handleVerify = async () => {
         setVerificationResult('idle');
         setErrorMessage('');
-        try {
-            const dadosBoleto = JSON.parse(qrCodeData);
-            const { beneficiario, valor, vencimento, hash } = dadosBoleto;
-            const dadosCriticosDoQr = `${beneficiario}-${valor}-${vencimento}`;
-            const hashGeradoDoQr = await sha256(dadosCriticosDoQr);
-            const registoBlockchain = localStorage.getItem(hash);
+        const inputData = qrCodeData.trim();
 
-            if (registoBlockchain && registoBlockchain === dadosCriticosDoQr && hashGeradoDoQr === hash) {
-                setVerificationResult('success');
-            } else {
-                setVerificationResult('error');
-                setErrorMessage('Os dados não correspondem ao registo oficial ou o boleto foi alterado.');
-            }
-        } catch (e: unknown) { // <-- CORREÇÃO DO 'any'
+        if (!inputData) {
+            setErrorMessage('Por favor, insira os dados para verificação.');
             setVerificationResult('error');
-            const message = e instanceof Error ? e.message : 'Dados inválidos.';
-            setErrorMessage(`Não foi possível processar os dados do QR Code. Detalhes: ${message}`);
+            return;
+        }
+
+        let hashToVerify: string | undefined;
+
+        try {
+            // Tenta interpretar como JSON. Se conseguir, pega o hash de dentro.
+            const parsedData = JSON.parse(inputData);
+            hashToVerify = parsedData.hash;
+        } catch (e) {
+            // Se não for JSON, assume que a própria string é o hash.
+            hashToVerify = inputData;
+        }
+
+        if (!hashToVerify) {
+            setVerificationResult('error');
+            setErrorMessage("Não foi possível extrair um hash dos dados fornecidos.");
+            return;
+        }
+
+        if (localStorage.getItem(hashToVerify) !== null) {
+            setVerificationResult('success');
+        } else {
+            setVerificationResult('error');
+            setErrorMessage('Hash não encontrado no registro. O boleto pode ser inválido ou fraudulento.');
         }
     };
 
